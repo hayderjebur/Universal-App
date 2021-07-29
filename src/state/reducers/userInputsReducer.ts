@@ -6,16 +6,32 @@ interface IState {
   isValidFields: boolean;
   error: string | null;
   data: string;
+  isDarkTheme: boolean;
 }
 
-const reducer = (state: IState, action: Action): IState => {
+const initialState = {
+  loading: false,
+  error: null,
+  data: '',
+  isValidFields: false,
+  isDarkTheme: false,
+};
+
+const reducer = (state: IState = initialState, action: Action): IState => {
   switch (action.type) {
     case ActionType.LOADING:
-      return { loading: true, isValidFields: true, error: null, data: '' };
+      return {
+        loading: true,
+        isValidFields: true,
+        isDarkTheme: true,
+        error: null,
+        data: '',
+      };
     case ActionType.VALID_INPUT_FIELDS:
       return {
         loading: false,
         isValidFields: true,
+        isDarkTheme: false,
         error: null,
         data: action.payload,
       };
@@ -23,8 +39,14 @@ const reducer = (state: IState, action: Action): IState => {
       return {
         loading: false,
         isValidFields: false,
+        isDarkTheme: false,
         error: action.payload,
         data: '',
+      };
+    case ActionType.TOGGLE_THEME:
+      return {
+        ...state,
+        isDarkTheme: !state.isDarkTheme,
       };
     default:
       return state;
