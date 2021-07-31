@@ -1,17 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  darkBtn: {
-    backgroundColor: '#393c3d',
-    margin: theme.spacing(3, 2, 2),
-    padding: 10,
-    width: 160,
-    height: 46,
-    borderRadius: theme.shape.borderRadius,
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
   main: {
     width: 'auto',
     display: 'block',
@@ -24,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
-    //background: '#fff',
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
@@ -55,10 +43,6 @@ const useStyles = makeStyles((theme) => ({
     width: 160,
     height: 46,
     borderRadius: theme.shape.borderRadius,
-    fontSize: 16,
-    backgroundColor: '#3a8dff',
-    fontWeight: 'bold',
-    color: '#fff',
   },
   formControl: {
     marginTop: '1rem ',

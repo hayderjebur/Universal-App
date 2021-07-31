@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import useStyles from './useStyle';
 import {
   Box,
   Button,
@@ -7,26 +8,14 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import useStyles from './useStyle';
+import { IUserInfo } from '../../interface/UserInfo';
+
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const Form: React.FC = () => {
   const classes = useStyles();
 
-  interface IUserInfo {
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    email: string;
-    errors: {
-      firstName: string;
-      middleName: string;
-      lastName: string;
-      email: string;
-    };
-  }
   const [userInfo, setUserInfo] = useState<IUserInfo>({
     firstName: '',
     middleName: '',
@@ -91,20 +80,16 @@ const Form: React.FC = () => {
     mockApiCall();
   };
 
-  // const isDarkModeEnabled = useMediaQuery('(prefers-color-scheme: dark)');
-
   return (
     <main className={classes.main}>
       <Paper className={classes.paper}>
-        <Typography className={classes.title} component='h1' variant='h5'>
+        <Typography component='h1' variant='h5'>
           User Info
         </Typography>
         <form onSubmit={onSubmit} className={classes.form} noValidate>
           <TextField
             id='firstName'
-            label={
-              <Typography className={classes.label}>First Name</Typography>
-            }
+            label='First Name'
             fullWidth
             margin='normal'
             InputLabelProps={{
@@ -123,9 +108,7 @@ const Form: React.FC = () => {
           />
           <TextField
             id='middleName'
-            label={
-              <Typography className={classes.label}>Middle Name</Typography>
-            }
+            label='Middle Name'
             fullWidth
             margin='normal'
             InputLabelProps={{
@@ -142,7 +125,7 @@ const Form: React.FC = () => {
           />
           <TextField
             id='lastName'
-            label={<Typography className={classes.label}>Last Name</Typography>}
+            label='Last Name'
             fullWidth
             margin='normal'
             InputLabelProps={{
@@ -161,9 +144,7 @@ const Form: React.FC = () => {
           />
           <TextField
             id='email'
-            label={
-              <Typography className={classes.label}>E-mail address</Typography>
-            }
+            label='E-mail address'
             fullWidth
             margin='normal'
             InputLabelProps={{
@@ -186,8 +167,8 @@ const Form: React.FC = () => {
               type='submit'
               size='large'
               variant='contained'
-              //color='primary'
-              className={isDarkTheme ? classes.darkBtn : classes.submit}
+              color='primary'
+              className={classes.submit}
             >
               {isLoading ? (
                 <CircularProgress style={{ color: 'white' }} />
