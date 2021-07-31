@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -10,25 +10,89 @@ import {
 import useStyles from './useStyle';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const Form: React.FC = () => {
   const classes = useStyles();
-  const [userInfo, setUserInfo] = useState({
+
+  interface IUserInfo {
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    email: string;
+    errors: {
+      firstName: string;
+      middleName: string;
+      lastName: string;
+      email: string;
+    };
+  }
+  const [userInfo, setUserInfo] = useState<IUserInfo>({
     firstName: '',
     middleName: '',
     lastName: '',
     email: '',
+    errors: {
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      email: '',
+    },
   });
+  const [disable, setDisable] = useState(true);
+  const { errors, firstName, middleName, lastName, email } = userInfo;
+
   //Actions
-  const { fetchUsers, toggleTheme } = useActions();
+  const { mockApiCall } = useActions();
   //State
-  const { isDarkTheme } = useTypedSelector((state) => state.userInputs);
+  const { isDarkTheme } = useTypedSelector((state) => state.toggleTheme);
+  const { isLoading, isValidFields } = useTypedSelector(
+    (state) => state.userInputs
+  );
+  const validEmailRegex = RegExp(
+    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+  );
+  useEffect(() => {
+    if (firstName && lastName && email && errors.email === '') {
+      setDisable(false);
+    }
+  }, [userInfo]);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'firstName':
+        errors.firstName =
+          value.length < 4
+            ? 'First Name must be at least 4 characters long!'
+            : '';
+        break;
+
+      case 'lastName':
+        errors.lastName =
+          value.length < 4
+            ? 'Last name must be at least 4 characters long!'
+            : '';
+        break;
+      case 'email':
+        errors.email = validEmailRegex.test(value) ? '' : 'Email is not valid!';
+        break;
+      default:
+        break;
+    }
+    setUserInfo({
+      ...userInfo,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    //Call dispatch here
-    //fetchUsers()
+    mockApiCall();
   };
+
+  // const isDarkModeEnabled = useMediaQuery('(prefers-color-scheme: dark)');
+
   return (
     <main className={classes.main}>
       <Paper className={classes.paper}>
@@ -52,10 +116,10 @@ const Form: React.FC = () => {
             name='firstName'
             autoComplete='firstName'
             autoFocus
-            //helperText={touched.username ? errors.username : ''}
-            //error={touched.username && Boolean(errors.username)}
-            //value={values.username}
-            //onChange={handleChange}
+            helperText={errors.firstName}
+            error={errors.firstName.length > 0 && Boolean(errors.firstName)}
+            value={firstName}
+            onChange={handleChange}
           />
           <TextField
             id='middleName'
@@ -73,10 +137,8 @@ const Form: React.FC = () => {
             name='middleName'
             autoComplete='middleName'
             autoFocus
-            //helperText={touched.username ? errors.username : ''}
-            //error={touched.username && Boolean(errors.username)}
-            //value={values.username}
-            //onChange={handleChange}
+            value={middleName}
+            onChange={handleChange}
           />
           <TextField
             id='lastName'
@@ -92,10 +154,10 @@ const Form: React.FC = () => {
             name='lastName'
             autoComplete='lastName'
             autoFocus
-            //helperText={touched.username ? errors.username : ''}
-            //error={touched.username && Boolean(errors.username)}
-            //value={values.username}
-            //onChange={handleChange}
+            helperText={errors.lastName}
+            error={errors.lastName.length > 0 && Boolean(errors.lastName)}
+            value={lastName}
+            onChange={handleChange}
           />
           <TextField
             id='email'
@@ -112,24 +174,25 @@ const Form: React.FC = () => {
             }}
             name='email'
             autoComplete='email'
-            // helperText={touched.email ? errors.email : ''}
-            // error={touched.email && Boolean(errors.email)}
-            // value={values.email}
-            // onChange={handleChange}
+            helperText={errors.email}
+            error={errors.email.length > 0 && Boolean(errors.email)}
+            value={email}
+            onChange={handleChange}
           />
 
           <Box textAlign='center'>
             <Button
+              disabled={disable}
               type='submit'
               size='large'
               variant='contained'
               //color='primary'
               className={isDarkTheme ? classes.darkBtn : classes.submit}
             >
-              {'isSubmitting' ? (
-                'Submit'
-              ) : (
+              {isLoading ? (
                 <CircularProgress style={{ color: 'white' }} />
+              ) : (
+                'Submit'
               )}
             </Button>
           </Box>

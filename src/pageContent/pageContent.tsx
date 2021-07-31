@@ -1,15 +1,16 @@
 import { useTypedSelector } from '../hooks/useTypedSelector';
+import styled from 'styled-components';
 
 const PageContent = (props: any) => {
-  //TODO   Styled-Componet
-  const { isDarkTheme } = useTypedSelector((state) => state.userInputs);
-  const styles = {
-    backgroundColor: isDarkTheme ? 'black' : 'white',
-    height: '100vh',
-    width: '100vw',
-  };
-  // className={isDarkTheme ? 'bgdark' : 'bglight'}
-  return <div style={styles}>{props.children}</div>;
+  const { isDarkTheme } = useTypedSelector((state) => state.toggleTheme);
+  const bg = isDarkTheme ? '#000' : '#f2f1ef';
+  const Wrapper = styled.section`
+    background-color: ${bg};
+    height: 100vh;
+    width: 100vw;
+  `;
+
+  return <Wrapper>{props.children}</Wrapper>;
 };
 
 export default PageContent;

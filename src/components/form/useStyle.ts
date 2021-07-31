@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
-    background: '#fff',
+    //background: '#fff',
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',

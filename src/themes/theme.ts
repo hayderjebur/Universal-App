@@ -7,7 +7,6 @@ export const theme = createTheme({
         boxShadow: 'none',
       },
       root: {
-        backgroundColor: '#393c3d',
         color: '#fff',
       },
     },
