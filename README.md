@@ -5,3 +5,5 @@
 -made useActions hook for readable syntax by binding all actions with bindActionCreators from redux.
 
 -Used local-storge to save a user theme mode preference. -Used a Dashboard component to wrap the theme provider and other components for access isDarkThem piece of state.
+
+-Made dark and light themes by using Material-ui themeing system.
