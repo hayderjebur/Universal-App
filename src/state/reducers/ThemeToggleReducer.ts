@@ -6,11 +6,12 @@ interface IState {
 }
 
 const initialState = {
-  isDarkTheme: false,
+  isDarkTheme: JSON.parse(localStorage.getItem('isDarkTheme') || ''),
 };
 
 const ThemeToggleReducer = (
   state: IState = initialState,
+
   action: Action
 ): IState => {
   switch (action.type) {

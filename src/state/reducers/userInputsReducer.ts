@@ -1,21 +1,17 @@
 import { ActionType } from '../action-types';
 import { Action } from '../actions';
-
-interface IState {
-  isLoading: boolean;
-  isValidFields: boolean;
-  error: string | null;
-  data: string;
-}
+import { IInitialState } from '../../interface/state';
 
 const initialState = {
   isLoading: false,
   error: null,
-  data: '',
   isValidFields: false,
 };
 
-const reducer = (state: IState = initialState, action: Action): IState => {
+const reducer = (
+  state: IInitialState = initialState,
+  action: Action
+): IInitialState => {
   switch (action.type) {
     case ActionType.LOADING:
       return {
@@ -32,7 +28,6 @@ const reducer = (state: IState = initialState, action: Action): IState => {
       return {
         ...state,
         isValidFields: false,
-        error: action.payload,
       };
 
     default:

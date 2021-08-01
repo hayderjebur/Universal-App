@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { IUserInfo } from '../../interface/UserInfo';
+import Success from '../Success';
 
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -32,19 +33,19 @@ const Form: React.FC = () => {
   const { errors, firstName, middleName, lastName, email } = userInfo;
 
   //Actions
-  const { mockApiCall } = useActions();
-  //State
-  const { isDarkTheme } = useTypedSelector((state) => state.toggleTheme);
+  const { mockApiCall, resetInputs } = useActions();
   const { isLoading, isValidFields } = useTypedSelector(
     (state) => state.userInputs
   );
+
   const validEmailRegex = RegExp(
-    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
   );
   useEffect(() => {
     if (firstName && lastName && email && errors.email === '') {
       setDisable(false);
     }
+    // eslint-disable-next-line
   }, [userInfo]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -78,10 +79,25 @@ const Form: React.FC = () => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     mockApiCall();
-  };
 
+    setUserInfo({
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      email: '',
+      errors: {
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        email: '',
+      },
+    });
+    setDisable(true);
+    resetInputs();
+  };
   return (
     <main className={classes.main}>
+      {isValidFields && <Success />}
       <Paper className={classes.paper}>
         <Typography component='h1' variant='h5'>
           User Info
@@ -119,7 +135,6 @@ const Form: React.FC = () => {
             }}
             name='middleName'
             autoComplete='middleName'
-            autoFocus
             value={middleName}
             onChange={handleChange}
           />
@@ -136,7 +151,6 @@ const Form: React.FC = () => {
             }}
             name='lastName'
             autoComplete='lastName'
-            autoFocus
             helperText={errors.lastName}
             error={errors.lastName.length > 0 && Boolean(errors.lastName)}
             value={lastName}
@@ -171,7 +185,7 @@ const Form: React.FC = () => {
               className={classes.submit}
             >
               {isLoading ? (
-                <CircularProgress style={{ color: 'white' }} />
+                <CircularProgress style={{ color: '#fff' }} />
               ) : (
                 'Submit'
               )}

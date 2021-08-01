@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { AppBar, Toolbar, Paper, IconButton } from '@material-ui/core';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
@@ -9,12 +8,6 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 export default function Navbar() {
   const { toggleTheme } = useActions();
   const { isDarkTheme } = useTypedSelector((state) => state.toggleTheme);
-
-  useEffect(() => {
-    const darkThemFromStorage =
-      localStorage.getItem('isDarkTheme') &&
-      JSON.parse(localStorage.getItem('isDarkTheme') || '');
-  }, []);
 
   const icon = isDarkTheme ? <Brightness3Icon /> : <Brightness7Icon />;
 

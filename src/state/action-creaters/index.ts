@@ -31,3 +31,8 @@ export const toggleTheme = () => (dispatch: Dispatch, getState: any) => {
     JSON.stringify(getState().toggleTheme.isDarkTheme)
   );
 };
+export const resetInputs = () => (dispatch: Dispatch) => {
+  dispatch({
+    type: ActionType.INVALID_INPUT_FIELDS,
+  });
+};
