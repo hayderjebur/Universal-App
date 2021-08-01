@@ -3,10 +3,15 @@ import Form from '../form/Form';
 import { createTheme } from '@material-ui/core/styles';
 import { MuiThemeProvider, Paper } from '@material-ui/core';
 import { grey, blue } from '@material-ui/core/colors';
+import styled from 'styled-components';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-const Dashboard: React.FC = () => {
+const StyledPaper = styled(Paper)`
+  height: 100vh;
+`;
+
+const Dashboard: React.FC = (): JSX.Element => {
   const { isDarkTheme } = useTypedSelector((state) => state.toggleTheme);
   const greyPrimary = grey['600'];
   const greySecondary = grey['300'];
@@ -43,10 +48,10 @@ const Dashboard: React.FC = () => {
 
   return (
     <MuiThemeProvider theme={isDarkTheme ? themeDark : themeLight}>
-      <Paper style={{ height: '100vh' }}>
+      <StyledPaper>
         <Navbar />
         <Form />
-      </Paper>
+      </StyledPaper>
     </MuiThemeProvider>
   );
 };

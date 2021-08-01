@@ -14,7 +14,7 @@ import Success from '../Success';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-const Form: React.FC = () => {
+const Form: React.FC = (): JSX.Element => {
   const classes = useStyles();
 
   const [userInfo, setUserInfo] = useState<IUserInfo>({

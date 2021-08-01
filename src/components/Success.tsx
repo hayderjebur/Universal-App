@@ -3,7 +3,7 @@ import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
 
-export default function Success() {
+const Success: React.FC = (): JSX.Element => {
   const [open, setOpen] = React.useState(true);
   return (
     <div>
@@ -27,4 +27,5 @@ export default function Success() {
       </Collapse>
     </div>
   );
-}
+};
+export default Success;

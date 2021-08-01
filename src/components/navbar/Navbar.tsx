@@ -5,7 +5,7 @@ import Brightness7Icon from '@material-ui/icons/Brightness7';
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-export default function Navbar() {
+const Navbar: React.FC = (): JSX.Element => {
   const { toggleTheme } = useActions();
   const { isDarkTheme } = useTypedSelector((state) => state.toggleTheme);
 
@@ -27,4 +27,5 @@ export default function Navbar() {
       </AppBar>
     </Paper>
   );
-}
+};
+export default Navbar;
