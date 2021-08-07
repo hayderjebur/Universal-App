@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState, useCallback } from 'react';
 import useStyles from './useStyle';
 import {
   Box,
@@ -48,33 +48,38 @@ const Form: React.FC = (): JSX.Element => {
     // eslint-disable-next-line
   }, [userInfo]);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    switch (name) {
-      case 'firstName':
-        errors.firstName =
-          value.length < 4
-            ? 'First Name must be at least 4 characters long!'
-            : '';
-        break;
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = event.target;
+      switch (name) {
+        case 'firstName':
+          errors.firstName =
+            value.length < 4
+              ? 'First Name must be at least 4 characters long!'
+              : '';
+          break;
 
-      case 'lastName':
-        errors.lastName =
-          value.length < 4
-            ? 'Last name must be at least 4 characters long!'
-            : '';
-        break;
-      case 'email':
-        errors.email = validEmailRegex.test(value) ? '' : 'Email is not valid!';
-        break;
-      default:
-        break;
-    }
-    setUserInfo({
-      ...userInfo,
-      [event.target.name]: event.target.value,
-    });
-  };
+        case 'lastName':
+          errors.lastName =
+            value.length < 4
+              ? 'Last name must be at least 4 characters long!'
+              : '';
+          break;
+        case 'email':
+          errors.email = validEmailRegex.test(value)
+            ? ''
+            : 'Email is not valid!';
+          break;
+        default:
+          break;
+      }
+      setUserInfo({
+        ...userInfo,
+        [event.target.name]: event.target.value,
+      });
+    },
+    [userInfo]
+  );
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -107,6 +112,7 @@ const Form: React.FC = (): JSX.Element => {
             id='firstName'
             label='First Name'
             fullWidth
+            required
             margin='normal'
             InputLabelProps={{
               shrink: true,
@@ -122,6 +128,7 @@ const Form: React.FC = (): JSX.Element => {
             value={firstName}
             onChange={handleChange}
           />
+
           <TextField
             id='middleName'
             label='Middle Name'
@@ -138,10 +145,12 @@ const Form: React.FC = (): JSX.Element => {
             value={middleName}
             onChange={handleChange}
           />
+
           <TextField
             id='lastName'
             label='Last Name'
             fullWidth
+            required
             margin='normal'
             InputLabelProps={{
               shrink: true,
@@ -156,10 +165,12 @@ const Form: React.FC = (): JSX.Element => {
             value={lastName}
             onChange={handleChange}
           />
+
           <TextField
             id='email'
             label='E-mail address'
             fullWidth
+            required
             margin='normal'
             InputLabelProps={{
               shrink: true,
