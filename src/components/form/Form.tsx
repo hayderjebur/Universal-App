@@ -8,8 +8,9 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { IUserInfo } from '../../interface/UserInfo';
+import { IUserInfo, IErrors } from '../../interface/UserInfo';
 import Success from '../Success';
+import { checkInputsValidation } from '../../helpers/checkInputsValidation';
 
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -22,15 +23,15 @@ const Form: React.FC = (): JSX.Element => {
     middleName: '',
     lastName: '',
     email: '',
-    errors: {
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      email: '',
-    },
+  });
+  const [errors] = useState<IErrors>({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    email: '',
   });
   const [disable, setDisable] = useState(true);
-  const { errors, firstName, middleName, lastName, email } = userInfo;
+  const { firstName, middleName, lastName, email } = userInfo;
 
   //Actions
   const { mockApiCall, resetInputs } = useActions();
@@ -38,11 +39,15 @@ const Form: React.FC = (): JSX.Element => {
     (state) => state.userInputs
   );
 
-  const validEmailRegex = RegExp(
-    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i
-  );
   useEffect(() => {
-    if (firstName && lastName && email && errors.email === '') {
+    if (
+      firstName &&
+      lastName &&
+      email &&
+      errors.firstName === '' &&
+      errors.lastName === '' &&
+      errors.email === ''
+    ) {
       setDisable(false);
     }
     // eslint-disable-next-line
@@ -51,28 +56,8 @@ const Form: React.FC = (): JSX.Element => {
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const { name, value } = event.target;
-      switch (name) {
-        case 'firstName':
-          errors.firstName =
-            value.length < 4
-              ? 'First Name must be at least 4 characters long!'
-              : '';
-          break;
+      checkInputsValidation(name, value, errors);
 
-        case 'lastName':
-          errors.lastName =
-            value.length < 4
-              ? 'Last name must be at least 4 characters long!'
-              : '';
-          break;
-        case 'email':
-          errors.email = validEmailRegex.test(value)
-            ? ''
-            : 'Email is not valid!';
-          break;
-        default:
-          break;
-      }
       setUserInfo({
         ...userInfo,
         [event.target.name]: event.target.value,
@@ -90,12 +75,6 @@ const Form: React.FC = (): JSX.Element => {
       middleName: '',
       lastName: '',
       email: '',
-      errors: {
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        email: '',
-      },
     });
     setDisable(true);
     resetInputs();
