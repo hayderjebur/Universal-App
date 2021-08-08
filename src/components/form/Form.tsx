@@ -5,12 +5,11 @@ import {
   Button,
   CircularProgress,
   Paper,
-  TextField,
   Typography,
 } from '@material-ui/core';
 import { IUserInfo, IErrors } from '../../interface/UserInfo';
 import Success from '../Success';
-import TextFieldComponent from '../fieldText/FieldText';
+import TextFieldComponent from '../textField/TextField';
 import { checkInputsValidation } from '../../helpers/checkInputsValidation';
 
 import { useActions } from '../../hooks/useActions';
@@ -64,6 +63,7 @@ const Form: React.FC = (): JSX.Element => {
         [event.target.name]: event.target.value,
       });
     },
+    // eslint-disable-next-line
     [userInfo]
   );
 
