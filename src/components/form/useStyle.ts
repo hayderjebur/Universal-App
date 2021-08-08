@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '.8rem',
     height: '1rem',
     padding: '5px',
-    position: 'relative',
   },
 
   submit: {

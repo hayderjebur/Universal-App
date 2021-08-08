@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { IUserInfo, IErrors } from '../../interface/UserInfo';
 import Success from '../Success';
+import TextFieldComponent from '../fieldText/FieldText';
 import { checkInputsValidation } from '../../helpers/checkInputsValidation';
 
 import { useActions } from '../../hooks/useActions';
@@ -87,78 +88,46 @@ const Form: React.FC = (): JSX.Element => {
           User Info
         </Typography>
         <form onSubmit={onSubmit} className={classes.form} noValidate>
-          <TextField
+          <TextFieldComponent
             id='firstName'
-            label='First Name'
-            fullWidth
-            required
-            margin='normal'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              classes: { input: classes.inputs },
-            }}
             name='firstName'
+            label='First Name'
             autoComplete='firstName'
-            autoFocus
+            required={true}
             helperText={errors.firstName}
             error={errors.firstName.length > 0 && Boolean(errors.firstName)}
             value={firstName}
             onChange={handleChange}
           />
 
-          <TextField
+          <TextFieldComponent
             id='middleName'
             label='Middle Name'
-            fullWidth
-            margin='normal'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              classes: { input: classes.inputs },
-            }}
             name='middleName'
             autoComplete='middleName'
+            required={false}
             value={middleName}
             onChange={handleChange}
           />
 
-          <TextField
+          <TextFieldComponent
             id='lastName'
             label='Last Name'
-            fullWidth
-            required
-            margin='normal'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              classes: { input: classes.inputs },
-            }}
             name='lastName'
             autoComplete='lastName'
+            required={true}
             helperText={errors.lastName}
             error={errors.lastName.length > 0 && Boolean(errors.lastName)}
             value={lastName}
             onChange={handleChange}
           />
 
-          <TextField
+          <TextFieldComponent
             id='email'
             label='E-mail address'
-            fullWidth
-            required
-            margin='normal'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              classes: { input: classes.inputs },
-            }}
             name='email'
             autoComplete='email'
+            required={true}
             helperText={errors.email}
             error={errors.email.length > 0 && Boolean(errors.email)}
             value={email}
